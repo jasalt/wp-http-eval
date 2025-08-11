@@ -1,23 +1,26 @@
 <?php
 /*
-Plugin Name: Phel Demo Plugin
-Description: Adds admin widget printing some content with Phel
-Version: 0.2
-Author: Jarkko Saltiola & contributors
+Plugin Name: WP HTTP Eval
+Description: Special plugin for administrative tasks. This probably should be removed if it's left laying around.
+Version: 0.1
+Author: jasalt
 Author URI: https://codeberg.org/jasalt
 */
 
 use Phel\Phel;
 
 if (isset($PHP_SELF) && $PHP_SELF !== "./vendor/bin/phel"){
-	// Initialize Phel environment in regular WP plugin web request context.
-	// This can be also narrowed to only specific routes or conditions to avoid
-	// it's runtime overhead where it's not needed.
+	// TODO Initialize WP REST API endpoint receiving Phel code to be evaluated
 
-	$projectRootDir = __DIR__ . '/';
-	require $projectRootDir . 'vendor/autoload.php';
+	// Running Phel code works as follows:
+	// $projectRootDir = __DIR__ . '/';
+	// require $projectRootDir . 'vendor/autoload.php';
+	// $opts = new \Phel\Compiler\Infrastructure\CompileOptions;
+	// $rf = new \Phel\Run\RunFacade;
+	// $result = $rf->eval($input, $opts);
+	// return $result;
 
-	Phel::run($projectRootDir, 'phel-wp-plugin\main');
+
 } else {
 	// Don't re-initialize Phel or run main namespace outside regular web request
 	// context e.g. when starting REPL session or running as WP-CLI command.
