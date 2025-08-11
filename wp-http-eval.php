@@ -7,7 +7,7 @@ Author: jasalt
 Author URI: https://codeberg.org/jasalt
 */
 
-// use Phel\Phel;
+use Phel\Phel;
 
 if (isset($PHP_SELF) && $PHP_SELF !== "./vendor/bin/phel"){
     add_action('rest_api_init', function() {
@@ -16,6 +16,8 @@ if (isset($PHP_SELF) && $PHP_SELF !== "./vendor/bin/phel"){
             'callback' => function(WP_REST_Request $request) {
                 $projectRootDir = __DIR__ . '/';
                 require $projectRootDir . 'vendor/autoload.php';
+
+				Phel::bootstrap($projectRootDir);
 
                 $input = $request->get_body();
                 $opts = new \Phel\Compiler\Infrastructure\CompileOptions;
