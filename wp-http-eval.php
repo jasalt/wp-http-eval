@@ -14,6 +14,11 @@ if (isset($PHP_SELF) && $PHP_SELF !== "./vendor/bin/phel"){
         register_rest_route('wp-http-eval/v1', '/eval', [
             'methods' => 'POST',
             'callback' => function(WP_REST_Request $request) {
+                $host = parse_url(home_url(), PHP_URL_HOST);
+                if (!is_ssl() && !in_array($host, ['localhost', '127.0.0.1']) && !str_ends_with($host, '.test')) {
+                    return new WP_Error('https_required', 'Requests must be made over HTTPS', ['status' => 403]);
+                }
+
                 $projectRootDir = __DIR__ . '/';
                 require $projectRootDir . 'vendor/autoload.php';
 
