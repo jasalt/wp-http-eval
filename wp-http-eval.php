@@ -22,6 +22,7 @@ if (isset($PHP_SELF) && $PHP_SELF !== "./vendor/bin/phel"){
                 $input = $request->get_body();
                 $opts = new \Phel\Compiler\Infrastructure\CompileOptions;
                 $rf = new \Phel\Run\RunFacade;
+				$rf->runNamespace('phel\\core');
 
                 try {
                     $result = $rf->eval($input, $opts);
