@@ -1,0 +1,28 @@
+{
+  "name": "jasalt/phel-wp-plugin",
+  "description": "A simple skeleton to build a WordPress plugin using Phel (LISP)",
+  "license": "MIT",
+  "type": "library",
+  "keywords": [
+    "wordpress",
+    "plugin",
+    "phel",
+    "lisp"
+  ],
+  "authors": [
+    {
+      "name": "Jarkko Saltiola & contributors"
+    }
+  ],
+  "require": {
+    "php": ">=8.3",
+    "phel-lang/phel-lang": "0.19.1"
+  },
+  "minimum-stability": "dev",
+  "config": {
+    "platform": {
+      "php": "8.3"
+    },
+    "sort-packages": true
+  }
+}
