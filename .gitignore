@@ -4,3 +4,4 @@ local/
 vendor/
 
 phel-config-local.php
+.aider*
