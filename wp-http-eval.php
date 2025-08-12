@@ -5,7 +5,7 @@
  * Version: 0.1
  * Author: jasalt
  * Author URI: https://codeberg.org/jasalt
-*/
+ */
 
 require_once("admin-widget.php");
 
@@ -71,25 +71,34 @@ function evalPhel($code){
 	}
 }
 
+function register_eval_endpoint(){
+	register_rest_route('wp-http-eval/v1', '/eval', [
+		'methods' => 'POST',
+		'callback' => function(WP_REST_Request $request) {
+			$host = parse_url(home_url(), PHP_URL_HOST);
+			if (!is_ssl() && !in_array($host, ['localhost', '127.0.0.1']) &&
+				!str_ends_with($host, '.test')) {
+				return new WP_Error('https_required', 'Requests must be made over HTTPS',
+									['status' => 403]);
+			}
+			$code = $request->get_body();
+			$result = evalPhel($code);
+			return $result;
+		},
+		'permission_callback' => function(WP_REST_Request $request) {
+			$auth_token = $request->get_header('X-WP-HTTP-EVAL-TOKEN');
+			return defined('WP_HTTP_EVAL_TOKEN') && $auth_token === WP_HTTP_EVAL_TOKEN;
+		}
+	]);
+}
+
+
 if (isset($PHP_SELF) && $PHP_SELF !== "./vendor/bin/phel"){
-    add_action('rest_api_init', function() {
-        register_rest_route('wp-http-eval/v1', '/eval', [
-            'methods' => 'POST',
-            'callback' => function(WP_REST_Request $request) {
-                $host = parse_url(home_url(), PHP_URL_HOST);
-                if (!is_ssl() && !in_array($host, ['localhost', '127.0.0.1']) && !str_ends_with($host, '.test')) {
-                    return new WP_Error('https_required', 'Requests must be made over HTTPS', ['status' => 403]);
-                }
-				$code = $request->get_body();
-                $result = evalPhel($code);
-				return $result;
-            },
-            'permission_callback' => function(WP_REST_Request $request) {
-                $auth_token = $request->get_header('X-WP-HTTP-EVAL-TOKEN');
-                return defined('WP_HTTP_EVAL_TOKEN') && $auth_token === WP_HTTP_EVAL_TOKEN;
-            }
-        ]);
-    });
+	add_action('rest_api_init', function() {
+		if (defined('WP_HTTP_EVAL_API') && WP_HTTP_EVAL_API == true){
+			register_eval_endpoint();
+		}
+	});
 } else {
 	// Don't re-initialize Phel or run main namespace outside regular web request
 	// context e.g. when starting REPL session or running as WP-CLI command.
