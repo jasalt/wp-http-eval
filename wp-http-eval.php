@@ -39,6 +39,38 @@ function loadAllPhelNamespaces($rf){
 
 }
 
+/*
+ * Evaluates Phel expression.
+ * Returns ["success" => true|false, "result" => output]
+ */
+function evalPhel($code){
+	$projectRootDir = __DIR__ . '/';
+	require $projectRootDir . 'vendor/autoload.php';
+
+	Phel::bootstrap($projectRootDir);
+
+
+	$opts = new \Phel\Compiler\Infrastructure\CompileOptions;
+	$rf = new \Phel\Run\RunFacade;
+
+	// https://github.com/phel-lang/phel-lang/blob/925ea02f4d9b4960071b06e5e8a24f4ae9ff2932/src/php/Run/Infrastructure/Command/ReplCommand.php#L105
+
+	loadAllPhelNamespaces($rf);
+
+	Registry::getInstance()->addDefinition(
+		CompilerConstants::PHEL_CORE_NAMESPACE,
+		ReplConstants::REPL_MODE,
+		true,
+	);
+
+	try {
+		$result = $rf->eval($code, $opts);
+		return ['success' => true, 'result' => $result];
+	} catch (Exception $e) {
+		return new WP_Error('phel_error', $e->getMessage(), ['status' => 400]);
+	}
+}
+
 if (isset($PHP_SELF) && $PHP_SELF !== "./vendor/bin/phel"){
     add_action('rest_api_init', function() {
         register_rest_route('wp-http-eval/v1', '/eval', [
@@ -48,32 +80,9 @@ if (isset($PHP_SELF) && $PHP_SELF !== "./vendor/bin/phel"){
                 if (!is_ssl() && !in_array($host, ['localhost', '127.0.0.1']) && !str_ends_with($host, '.test')) {
                     return new WP_Error('https_required', 'Requests must be made over HTTPS', ['status' => 403]);
                 }
-
-                $projectRootDir = __DIR__ . '/';
-                require $projectRootDir . 'vendor/autoload.php';
-
-				Phel::bootstrap($projectRootDir);
-
-                $input = $request->get_body();
-                $opts = new \Phel\Compiler\Infrastructure\CompileOptions;
-                $rf = new \Phel\Run\RunFacade;
-
-				// https://github.com/phel-lang/phel-lang/blob/925ea02f4d9b4960071b06e5e8a24f4ae9ff2932/src/php/Run/Infrastructure/Command/ReplCommand.php#L105
-
-				loadAllPhelNamespaces($rf);
-
-				Registry::getInstance()->addDefinition(
-					CompilerConstants::PHEL_CORE_NAMESPACE,
-					ReplConstants::REPL_MODE,
-					true,
-				);
-
-                try {
-                    $result = $rf->eval($input, $opts);
-                    return ['success' => true, 'result' => $result];
-                } catch (Exception $e) {
-                    return new WP_Error('phel_error', $e->getMessage(), ['status' => 400]);
-                }
+				$code = $request->get_body();
+                $result = evalPhel($code);
+				return $result;
             },
             'permission_callback' => function(WP_REST_Request $request) {
                 $auth_token = $request->get_header('X-WP-HTTP-EVAL-TOKEN');
