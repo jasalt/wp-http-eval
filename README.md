@@ -13,6 +13,8 @@ A powerful WordPress plugin that allows administrators to evaluate Phel code via
   - Secure token-based authentication
   - Automatic HTTPS enforcement for non-local domains
 
+The tool uses traditional stateless PHP backend facilities running each request in separate process and state between evaluations is not managed which differentiates this from REPL. Each evaluation request runs independently of others starting from empty environment so e.g. `require`'s and `def`s need to be re-run every time.
+
 ## Security notes
 
 Remote execution of arbitrary code **should only be allowed used in development environments or by trusted administrators in production**. Always use strong, unique tokens and HTTPS in production.
@@ -59,6 +61,8 @@ curl -X POST -H "X-WP-HTTP-EVAL-TOKEN: secret123" -H "Content-Type: text/plain" 
 {"success":true,"result":"<p>foo<\/p>"}
 ```
 
+Behavior for requiring namespaces is largely similar as with `phel repl`, including usage of `(require other-ns)` instead of `(ns myns (:require other-ns))`, as Phel is initialized same way as the REPL.
+
 ## Phel PHP HTTP client example
 
 With Phel installed either as Phar named `phel` in `PATH` or via Composer where it's callable via `vendor/bin/phel` at the current directory, example HTTP client code is included at `client-example/client.phel` which can be run as follows:
@@ -69,3 +73,15 @@ WP_HTTP_EVAL_TOKEN=secret123 WP_HTTP_EVAL_HOST=http://localhost:8081 phel run cl
 Requesting http://localhost:8081/wp-json/wp-http-eval/v1/eval
 Response: {"success":true,"result":"<h1>Requested WP backend at 8de8a50072c7<\/h1>"}
 ```
+
+Script calls a Phel macro:
+
+```
+(eval-remote
+ (require phel\html)
+ (html/html
+  [:h1
+   (str "Requested WP backend at " (php/gethostname))]))
+```
+
+Research the source code for more hints..

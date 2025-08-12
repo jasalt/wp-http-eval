@@ -41,13 +41,16 @@
       (println "Error making request" response)
       (println "Response:" response))))
 
-(def phel-code
-  "(require phel\\html)
-   (html/html
-     [:h1
-       (str \"Requested WP backend at \" (php/gethostname))])")
+## Function usage:
 
-(eval-expr {:endpoint endpoint :token token :expr phel-code})
+## (def phel-code
+##   "(require phel\\html)
+##    (html/html
+##      [:h1
+##        (str \"Requested WP backend at \" (php/gethostname))])")
+
+## (eval-expr {:endpoint endpoint :token token :expr phel-code})
+
 
 (defn code->str
   "Converts Phel code forms to their string representation.
@@ -63,13 +66,13 @@
 
 (defmacro eval-remote
   "Macro that serializes Phel code to string and sends it for remote evaluation.
-   Takes any number of code forms and evaluates them on the remote endpoint."
+   Takes any number of code forms and evaluates them on the remote endpoint.
+   TODO parse result"
   [& code]
   `(eval-expr {:endpoint ,endpoint :token ,token :expr ,(str/join " " (map code->str code))}))
 
-(comment
-  (eval-remote (require phel\html)
-               (html/html
-                [:h1
-                 (str "Requested WP backend at " (php/gethostname))]))
-)
+(eval-remote
+ (require phel\html)
+ (html/html
+  [:h1
+   (str "Requested WP backend at " (php/gethostname))]))
