@@ -7,6 +7,8 @@ Author: jasalt
 Author URI: https://codeberg.org/jasalt
 */
 
+require_once("admin-widget.php");
+
 use Phel\Phel;
 use Phel\Lang\Registry;
 use Phel\Shared\CompilerConstants;
