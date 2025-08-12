@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
-        'name' => 'jasalt/phel-wp-plugin',
+        'name' => 'jasalt/wp-http-eval',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '66d47354ef96bf3f4f1c077d6c27384dda98575d',
+        'reference' => 'd765547f9f650ea8754c8c6563f0556ca2f34f5f',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -28,10 +28,10 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
-        'jasalt/phel-wp-plugin' => array(
+        'jasalt/wp-http-eval' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '66d47354ef96bf3f4f1c077d6c27384dda98575d',
+            'reference' => 'd765547f9f650ea8754c8c6563f0556ca2f34f5f',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -75,7 +75,7 @@
         'symfony/console' => array(
             'pretty_version' => '7.4.x-dev',
             'version' => '7.4.9999999.9999999-dev',
-            'reference' => 'efb76ce5b1a1b9ec7c88f3f02c5c33cc6d4c776a',
+            'reference' => 'd7cbab18d0708dbae75f8c4470f4fc5c5c88296c',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/console',
             'aliases' => array(),
@@ -142,7 +142,7 @@
         'symfony/string' => array(
             'pretty_version' => '7.4.x-dev',
             'version' => '7.4.9999999.9999999-dev',
-            'reference' => 'a9f583bc3e942e9af017033937d4f3473a567a1c',
+            'reference' => '08587b6ef645178c1095581c83c36b9f817041bb',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/string',
             'aliases' => array(),

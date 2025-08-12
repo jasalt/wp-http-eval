@@ -364,12 +364,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "efb76ce5b1a1b9ec7c88f3f02c5c33cc6d4c776a"
+                "reference": "d7cbab18d0708dbae75f8c4470f4fc5c5c88296c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/efb76ce5b1a1b9ec7c88f3f02c5c33cc6d4c776a",
-                "reference": "efb76ce5b1a1b9ec7c88f3f02c5c33cc6d4c776a",
+                "url": "https://api.github.com/repos/symfony/console/zipball/d7cbab18d0708dbae75f8c4470f4fc5c5c88296c",
+                "reference": "d7cbab18d0708dbae75f8c4470f4fc5c5c88296c",
                 "shasum": ""
             },
             "require": {
@@ -402,7 +402,7 @@
                 "symfony/stopwatch": "^6.4|^7.0|^8.0",
                 "symfony/var-dumper": "^6.4|^7.0|^8.0"
             },
-            "time": "2025-07-31T09:31:17+00:00",
+            "time": "2025-08-06T06:01:34+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -970,12 +970,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "a9f583bc3e942e9af017033937d4f3473a567a1c"
+                "reference": "08587b6ef645178c1095581c83c36b9f817041bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/a9f583bc3e942e9af017033937d4f3473a567a1c",
-                "reference": "a9f583bc3e942e9af017033937d4f3473a567a1c",
+                "url": "https://api.github.com/repos/symfony/string/zipball/08587b6ef645178c1095581c83c36b9f817041bb",
+                "reference": "08587b6ef645178c1095581c83c36b9f817041bb",
                 "shasum": ""
             },
             "require": {
@@ -996,7 +996,7 @@
                 "symfony/translation-contracts": "^2.5|^3.0",
                 "symfony/var-exporter": "^6.4|^7.0|^8.0"
             },
-            "time": "2025-07-31T09:31:17+00:00",
+            "time": "2025-08-05T10:19:40+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {

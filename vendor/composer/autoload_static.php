@@ -76,8 +76,8 @@ class ComposerStaticInite3657823b5b31af850566734b2d54f4e
         ),
         'Gacela\\' => 
         array (
-            0 => __DIR__ . '/..' . '/gacela-project/gacela/src',
-            1 => __DIR__ . '/..' . '/gacela-project/container/src',
+            0 => __DIR__ . '/..' . '/gacela-project/container/src',
+            1 => __DIR__ . '/..' . '/gacela-project/gacela/src',
         ),
     );
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e3657823b5b31af850566734b2d54f4e",
+    "content-hash": "53376d4e5615243993c8a7b5685d4711",
     "packages": [
         {
             "name": "gacela-project/container",
@@ -354,12 +354,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "efb76ce5b1a1b9ec7c88f3f02c5c33cc6d4c776a"
+                "reference": "d7cbab18d0708dbae75f8c4470f4fc5c5c88296c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/efb76ce5b1a1b9ec7c88f3f02c5c33cc6d4c776a",
-                "reference": "efb76ce5b1a1b9ec7c88f3f02c5c33cc6d4c776a",
+                "url": "https://api.github.com/repos/symfony/console/zipball/d7cbab18d0708dbae75f8c4470f4fc5c5c88296c",
+                "reference": "d7cbab18d0708dbae75f8c4470f4fc5c5c88296c",
                 "shasum": ""
             },
             "require": {
@@ -444,7 +444,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-07-31T09:31:17+00:00"
+            "time": "2025-08-06T06:01:34+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -505,6 +505,10 @@
                 },
                 {
                     "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/nicolas-grekas",
                     "type": "github"
                 },
                 {
@@ -939,12 +943,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "a9f583bc3e942e9af017033937d4f3473a567a1c"
+                "reference": "08587b6ef645178c1095581c83c36b9f817041bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/a9f583bc3e942e9af017033937d4f3473a567a1c",
-                "reference": "a9f583bc3e942e9af017033937d4f3473a567a1c",
+                "url": "https://api.github.com/repos/symfony/string/zipball/08587b6ef645178c1095581c83c36b9f817041bb",
+                "reference": "08587b6ef645178c1095581c83c36b9f817041bb",
                 "shasum": ""
             },
             "require": {
@@ -1022,21 +1026,21 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-07-31T09:31:17+00:00"
+            "time": "2025-08-05T10:19:40+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": ">=8.3"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "platform-overrides": {
         "php": "8.3"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }

@@ -15,5 +15,5 @@ return array(
     'Symfony\\Component\\Console\\' => array($vendorDir . '/symfony/console'),
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
     'Phel\\' => array($vendorDir . '/phel-lang/phel-lang/src/php'),
-    'Gacela\\' => array($vendorDir . '/gacela-project/gacela/src', $vendorDir . '/gacela-project/container/src'),
+    'Gacela\\' => array($vendorDir . '/gacela-project/container/src', $vendorDir . '/gacela-project/gacela/src'),
 );
