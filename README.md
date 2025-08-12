@@ -2,6 +2,9 @@
 
 After activating the plugin, setup token in `wp-config.php` with `define('WP_HTTP_EVAL_TOKEN', 'secret123');`.
 
+To enable the REST API endpoint for evaluating Phel code, also add:
+`define('WP_HTTP_EVAL_API', true);`
+
 To enable the admin dashboard widget for evaluating Phel code, also add:
 `define('WP_HTTP_EVAL_WIDGET', true);`
 
@@ -51,4 +54,3 @@ Response: {"success":true,"result":"<h1>Requested WP backend at 8de8a50072c7<\/h
 
 # TODO
 - Remove other admin widgets
-- Enable admin widget based on PHP constant in wp-config.php

@@ -80,6 +80,7 @@ else
          <!-- /wp:paragraph -->'
 
   echo "define('WP_HTTP_EVAL_TOKEN', 'secret123');" >> /var/www/html/wp-config.php
+  echo "define('WP_HTTP_EVAL_API', true);" >> /var/www/html/wp-config.php
   echo "define('WP_HTTP_EVAL_WIDGET', true);" >> /var/www/html/wp-config.php
 
 	date > /COMPOSE_INITIALIZED
