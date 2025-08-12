@@ -1,23 +1,39 @@
-# Installation
+# wp-http-eval
 
-After activating the plugin, setup token in `wp-config.php` with `define('WP_HTTP_EVAL_TOKEN', 'secret123');`.
-
-To enable the REST API endpoint for evaluating Phel code, also add:
-`define('WP_HTTP_EVAL_API', true);`
-
-To enable the admin dashboard widget for evaluating Phel code, also add:
-`define('WP_HTTP_EVAL_WIDGET', true);`
-
-The widget provides a convenient interface for administrators to evaluate Phel expressions directly from the WordPress dashboard, with support for Ctrl+Enter keyboard shortcut.
+A powerful WordPress plugin that allows administrators to evaluate Phel code via HTTP requests or directly from the WordPress admin dashboard.
 
 ![Image of WordPress Admin Dashboard the plugin installed and widget enabled](demo.png "Image of WordPress Admin Dashboard the plugin installed and widget enabled")
 
+## Features
+
+- Widget
+  - Admin dashboard widget for convenient code testing
+  - Support for Ctrl+Enter shortcut in the dashboard widget
+- REST API endpoint for remote Phel code evaluation
+  - Secure token-based authentication
+  - Automatic HTTPS enforcement for non-local domains
+
+## Security notes
+
+Remote execution of arbitrary code **should only be allowed used in development environments or by trusted administrators in production**. Always use strong, unique tokens and HTTPS in production.
+
+# Installation
+
 ## Development container setup
 
-Start a bare bones WordPress installation with the plugin installed by running `docker compose up` in this directory.
+Start a bare bones WordPress installation with the plugin installed and configured with all features by running `docker compose up` in this directory to get a demo running. This requires working Docker (or Podman) installation.
 
-## Installing as plugin on existing WordPress site
+## Installing on existing WordPress site
 
+1. Clone or download this repository to your WordPress plugins directory
+2. Run `composer install` to install dependencies
+3. Activate the plugin through the WordPress admin panel
+4. Configure plugin settings in your `wp-config.php` file
+  - Enable the admin dashboard widget `define('WP_HTTP_EVAL_WIDGET', true);`
+  - Enable the REST API endpoint `define('WP_HTTP_EVAL_API', true);`
+  - Set API token `wp-config.php` with `define('WP_HTTP_EVAL_TOKEN', 'secret123');`
+
+### Composer notes
 To populate the `vendor/` path, `composer install` needs to be run first. After this the repository can be placed in `wp-content/plugins/` directory or zip can be created from the repository folder for installing on a site.
 
 There's some ceaveats to the Composer autoloader in plugins as explained in [phel-wp-plugin](https://github.com/jasalt/phel-wp-plugin) readme which need to be considered if the same Composer dependencies are used in separate places (plugins or theme).
@@ -53,6 +69,3 @@ WP_HTTP_EVAL_TOKEN=secret123 WP_HTTP_EVAL_HOST=http://localhost:8081 phel run cl
 Requesting http://localhost:8081/wp-json/wp-http-eval/v1/eval
 Response: {"success":true,"result":"<h1>Requested WP backend at 8de8a50072c7<\/h1>"}
 ```
-
-# TODO
-- Remove other admin widgets
