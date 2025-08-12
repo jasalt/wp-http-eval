@@ -1,0 +1,45 @@
+(ns wp-http-eval\client-example
+  (require phel\str))
+
+## Phel PHP HTTP request client example with PHP streams
+
+(def host  (php/getenv "WP_HTTP_EVAL_HOST"))
+(def token (php/getenv "WP_HTTP_EVAL_TOKEN"))
+
+(def endpoint (str (php/rtrim host "/")
+                   "/wp-json/wp-http-eval/v1/eval"))
+
+(println "Requesting" endpoint)
+
+## (def phel-code "(require phel\\html)(html/html [:p \"foo\"])")
+(def phel-code "(+ 1 2 3)")
+
+(defn m->header [m]
+  (->> (for [[k v] :pairs m]
+         (str (name k) ": " v))
+       (str/join "\r\n")))
+
+(def context
+  (php/stream_context_create
+   (phel->php
+    {:http
+     {:method "POST"
+      :content phel-code
+      :header
+      (m->header
+       {:Accept "*/*"
+        :X-WP-HTTP-EVAL-TOKEN "secret123"
+        :Content-Type "text/plain"
+        :Content-Length (php/strlen phel-code)
+        })
+      :ignore_errors true
+      }})
+   ))
+
+(def response (php/file_get_contents endpoint false context))
+(def response-code (php/http_response_code))
+
+(if (= false response)
+  (println "Error making request, code" response-code)
+  (println "Response:" response)
+  )
