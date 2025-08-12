@@ -1,3 +1,46 @@
 <?php
 
-// TODO Create AJAX admin widget for administrator users which includes text box providing input for eval, a button to send the AJAX POST request and a result area receiving the output result from response
+add_action('admin_init', function() {
+    add_action('wp_ajax_wp_http_eval', 'handle_eval_request');
+});
+
+function handle_eval_request() {
+    if (!current_user_can('administrator')) {
+        wp_send_json_error('Permission denied', 403);
+    }
+
+    $code = $_POST['code'] ?? '';
+    if (empty($code)) {
+        wp_send_json_error('No code provided', 400);
+    }
+	## error_log("Evaluating...");
+
+    $result = evalPhel($code);
+	## error_log(print_r($result));
+    wp_send_json($result);
+}
+
+add_action('wp_dashboard_setup', function() {
+    if (current_user_can('administrator')) {
+        wp_add_dashboard_widget(
+            'wp_http_eval_widget',
+            'Phel Code Evaluator',
+            'render_eval_widget'
+        );
+    }
+});
+
+function render_eval_widget() {
+    wp_enqueue_script('wp-http-eval', plugins_url('admin-widget.js', __FILE__), ['jquery'], '1.0', true);
+    wp_localize_script('wp-http-eval', 'wpHttpEval', [
+        'ajaxUrl' => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('wp_http_eval_nonce')
+    ]);
+    ?>
+    <div class="wp-http-eval-widget">
+        <textarea id="wp-http-eval-code" rows="10" style="width: 100%;" placeholder="Enter Phel code here"></textarea>
+        <button id="wp-http-eval-submit" class="button button-primary">Evaluate</button>
+        <div id="wp-http-eval-result" style="margin-top: 15px; padding: 10px; border: 1px solid #ddd; background: #f9f9f9; display: none;"></div>
+    </div>
+    <?php
+}
