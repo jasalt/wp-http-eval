@@ -2,9 +2,15 @@
 
 After activating the plugin, setup token in `wp-config.php` with `define('WP_HTTP_EVAL_TOKEN', 'secret123');`.
 
-# Development container setup
+## Development container setup
 
 Start a bare bones WordPress installation with the plugin installed by running `docker compose up` in this directory.
+
+## Installing as plugin on existing WordPress site
+
+To populate the `vendor/` path, `composer install` needs to be run first. After this the repository can be placed in `wp-content/plugins/` directory or zip can be created from the repository folder for installing on a site.
+
+There's some ceaveats to the Composer autoloader in plugins as explained in [phel-wp-plugin](https://github.com/jasalt/phel-wp-plugin) readme which need to be considered if the same Composer dependencies are used in separate places (plugins or theme).
 
 # API client examples
 
