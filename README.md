@@ -10,6 +10,8 @@ To enable the admin dashboard widget for evaluating Phel code, also add:
 
 The widget provides a convenient interface for administrators to evaluate Phel expressions directly from the WordPress dashboard, with support for Ctrl+Enter keyboard shortcut.
 
+![Image of WordPress Admin Dashboard the plugin installed and widget enabled](demo.png "Image of WordPress Admin Dashboard the plugin installed and widget enabled")
+
 ## Development container setup
 
 Start a bare bones WordPress installation with the plugin installed by running `docker compose up` in this directory.
