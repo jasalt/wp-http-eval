@@ -8,13 +8,11 @@ jQuery(document).ready(function($) {
     resultDiv.hide().empty();
 
     $.ajax({
-      url: wpHttpEval.ajaxUrl,
+      url: wpHttpEval.ajaxUrl + '?action=wp_http_eval&_ajax_nonce=' + wpHttpEval.nonce,
       type: 'POST',
-      data: {
-        action: 'wp_http_eval',
-        code: code,
-        _ajax_nonce: wpHttpEval.nonce
-      },
+      data: code,
+      contentType: 'text/plain',
+      processData: false,
       beforeSend: function() {
         $('#wp-http-eval-submit').prop('disabled', true).text('Evaluating...');
       },

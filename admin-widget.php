@@ -9,14 +9,18 @@ function handle_eval_request() {
         wp_send_json_error('Permission denied', 403);
     }
 
-    $code = $_POST['code'] ?? '';
-    if (empty($code)) {
+    // Verify nonce
+    if (!wp_verify_nonce($_GET['_ajax_nonce'], 'wp_http_eval_nonce')) {
+        wp_send_json_error('Invalid nonce', 403);
+    }
+
+    $code = file_get_contents('php://input');
+    // error_log("Evaluating: " . $code);
+    if (empty(trim($code))) {
         wp_send_json_error('No code provided', 400);
     }
-	## error_log("Evaluating...");
 
     $result = evalPhel($code);
-	## error_log(print_r($result));
     wp_send_json($result);
 }
 
