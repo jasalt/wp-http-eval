@@ -8,14 +8,14 @@ services:
       MYSQL_DATABASE: wordpress
       MYSQL_USER: wordpress
       MYSQL_PASSWORD: wordpress
-    ports:
-      - 3306:3306
+    # ports:
+    #   - 3306:3306
     restart: unless-stopped
   wp:
     build: .
     entrypoint: /custom-entrypoint.sh
     ports:
-      - "8080:80"  # modify post-init.sh if changing port
+      - "8081:80"
     depends_on:
       - db
     restart: always
@@ -28,7 +28,7 @@ services:
     volumes:
       - wordpress_data:/var/www/html
       - ./custom-entrypoint.sh:/custom-entrypoint.sh
-      - .:/var/www/html/wp-content/plugins/phel-wp-plugin
+      - .:/var/www/html/wp-content/plugins/wp-http-eval
 
 volumes:
   db_data:

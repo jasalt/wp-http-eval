@@ -1,8 +1,20 @@
 #!/usr/bin/env bash
 set -Eeou pipefail
 
+PLUGIN_NAME=wp-http-eval
+SITE_URL=localhost:8081
+
 # Wrapper around original entrypoint appending extra initialization logic before
 # starting the web server
+
+echo_startup_banner() {
+  echo ""
+	echo "Login to the site at http://$SITE_URL/wp-admin/"
+	echo ""
+	echo "Username: admin"
+	echo "Password: password"
+	echo ""
+}
 
 
 ### HACK: Make original entrypoint skip starting the server while running otherwise by
@@ -23,15 +35,19 @@ chmod +x /usr/local/bin/apache2-noop
 ### END HACK
 
 
-echo "CRunning extra tasks before starting apache..."
+echo "Running extra tasks before starting apache..."
 
 if [ -f "/COMPOSE_INITIALIZED" ]; then
+	echo ""
 	echo "Found /COMPOSE_INITIALIZED"
 	echo "Initialization in custom-entrypoint.sh already done. Skipping."
+	echo ""
+	echo "Welcome back!"
+	echo_startup_banner
 else
 	echo "Running custom-entrypoint.sh initialization"
 
-	cd /var/www/html/wp-content/plugins/phel-wp-plugin
+	cd /var/www/html/wp-content/plugins/$PLUGIN_NAME
 	composer install
 
 	cd /var/www/html/
@@ -41,44 +57,35 @@ else
 
 	echo "Setting up WP installation with demo credentials"
 
-	wp core install --allow-root --url=localhost:8080 \
+	wp core install --allow-root --url=$SITE_URL \
 	   --title="Phel WP Plugin Demo Site" --admin_user=admin \
 	   --admin_password=password --admin_email=example@example.com
 
 	# Not necessary but added so Apache doesn't make noise on startup
 	echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
-	wp plugin activate phel-wp-plugin --allow-root
+	wp plugin activate $PLUGIN_NAME --allow-root
 
 	wp post create --post_status=publish --allow-root \
 	   --post_title='Demo post' --post_content='
          <!-- wp:paragraph -->
            <p>Hello world.
-             <a href="http://localhost:8080/wp-admin/post.php?post=4&amp;action=edit">Login &amp; edit</a>
+             <a href="http://'$SITE_URL'/wp-admin/post.php?post=4&amp;action=edit">Login &amp; edit</a>
            </p>
          <!-- /wp:paragraph -->'
 
 	date > /COMPOSE_INITIALIZED
 
 	echo ""
-	echo " , _                          , _     , _                    "
-	echo "/|/ \|     _ |\    (|  |  |_//|/ \   /|/ \|\        _, o     "
-	echo " |__/|/\  |/ |/     |  |  |   |__/    |__/|/ |  |  / | | /|/|"
-	echo " |   |  |/|_/|_/     \/ \/    |       |   |_/ \/|_/\/|/|/ | |_/"
-	echo "                                                    (|"
-	echo ""
-	echo "Setup completed! Login to the site at http://localhost:8080/wp-admin/"
-	echo ""
-	echo "Username: admin"
-	echo "Password: password"
-	echo ""
+	echo "Setup completed!"
+	echo_startup_banner
 	echo "Phel admin widget should be visible on the dashboard..."
-
+	echo ""
 fi
 
 # Run server or given arguments like original entrypoint
 if [ $# -eq 0 ]; then
-    exec apache2-foreground
+  exec apache2-foreground
 else
-    exec "$@"
+  exec "$@"
 fi
