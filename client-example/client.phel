@@ -13,19 +13,14 @@
 (def endpoint (str (php/rtrim host "/")
                    "/wp-json/wp-http-eval/v1/eval"))
 
-(println "Requesting" endpoint)
-
-(def phel-code
-  "(require phel\\html)
-   (html/html
-     [:h1
-       (str \"Requested WP backend at \" (php/gethostname))])")
-
 (defn m->header [m]
   (for [[k v] :pairs m]
     (str (name k) ": " v)))
 
 (defn eval-expr [{:endpoint endpoint :token token :expr expr}]
+  ## (println "Requesting" endpoint)
+  ## (println "Token" token)
+  ## (println "Expr" expr)
   (let [context (php/stream_context_create
                  (phel->php
                   {:http
@@ -44,8 +39,37 @@
         response (php/file_get_contents endpoint false context)]
     (if (= false response)
       (println "Error making request" response)
-      (println "Response:" response))
-    )
-  )
+      (println "Response:" response))))
+
+(def phel-code
+  "(require phel\\html)
+   (html/html
+     [:h1
+       (str \"Requested WP backend at \" (php/gethostname))])")
 
 (eval-expr {:endpoint endpoint :token token :expr phel-code})
+
+(defn code->str
+  "Converts Phel code forms to their string representation.
+   Handles symbols, lists, vectors, hash-maps, strings, and other forms."
+  [form]
+  (cond
+    (symbol? form) (full-name form)
+    (list? form) (str "(" (str/join " " (map code->str form)) ")")
+    (vector? form) (str "[" (str/join " " (map code->str form)) "]")
+    (hash-map? form) (str "{" (str/join " " (mapcat (fn [[k v]] [(code->str k) (code->str v)]) form)) "}")
+    (string? form) (str "\"" form "\"")
+    :else (str form)))
+
+(defmacro eval-remote
+  "Macro that serializes Phel code to string and sends it for remote evaluation.
+   Takes any number of code forms and evaluates them on the remote endpoint."
+  [& code]
+  `(eval-expr {:endpoint ,endpoint :token ,token :expr ,(str/join " " (map code->str code))}))
+
+(comment
+  (eval-remote (require phel\html)
+               (html/html
+                [:h1
+                 (str "Requested WP backend at " (php/gethostname))]))
+)
