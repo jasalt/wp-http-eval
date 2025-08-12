@@ -18,7 +18,7 @@ jQuery(document).ready(function($) {
       },
       success: function(response) {
         if (response.success) {
-          resultDiv.html('<strong>Result:</strong><pre>' + JSON.stringify(response.result, null, 2) + '</pre>');
+          resultDiv.html('<strong>Result:</strong><pre>' + $('<div>').text(response.result).html() + '</pre>');
         } else {
           // Handle WordPress error format
           const errorMessage = response.errors
