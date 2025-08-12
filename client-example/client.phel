@@ -4,7 +4,7 @@
 ## Phel PHP HTTP client example doing request with PHP streams
 ## Usage:
 
-## WP_HTTP_EVAL_TOKEN=secret123 WP_HTTP_EVAL_HOST=http://example.com phel run client.phel
+## WP_HTTP_EVAL_TOKEN=secret123 WP_HTTP_EVAL_HOST=http://localhost:8081 phel run client.phel
 
 
 (def host  (php/getenv "WP_HTTP_EVAL_HOST"))
@@ -25,25 +25,27 @@
   (for [[k v] :pairs m]
     (str (name k) ": " v)))
 
-(def context
-  (php/stream_context_create
-   (phel->php
-    {:http
-     {:method "POST"
-      :content phel-code
-      :header
-      (m->header
-       {:Accept "*/*"
-        :X-WP-HTTP-EVAL-TOKEN token
-        :Content-Type "text/plain"
-        :Content-Length (php/strlen phel-code)
-        })
-      :ignore_errors true
-      }})
-   ))
+(defn eval-expr [{:endpoint endpoint :token token :expr expr}]
+  (let [context (php/stream_context_create
+                 (phel->php
+                  {:http
+                   {:method "POST"
+                    :content expr
+                    :header
+                    (m->header
+                     {:Accept "*/*"
+                      :X-WP-HTTP-EVAL-TOKEN token
+                      :Content-Type "text/plain"
+                      :Content-Length (php/strlen expr)
+                      })
+                    :ignore_errors true
+                    }})
+                 )
+        response (php/file_get_contents endpoint false context)]
+    (if (= false response)
+      (println "Error making request" response)
+      (println "Response:" response))
+    )
+  )
 
-(def response (php/file_get_contents endpoint false context))
-
-(if (= false response)
-  (println "Error making request" response)
-  (println "Response:" response))
+(eval-expr {:endpoint endpoint :token token :expr phel-code})
