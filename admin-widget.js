@@ -18,7 +18,14 @@ jQuery(document).ready(function($) {
       },
       success: function(response) {
         if (response.success) {
-          resultDiv.html('<strong>Result:</strong><pre>' + $('<div>').text(response.result).html() + '</pre>');
+          // Format the result properly for display
+          let formattedResult;
+          if (typeof response.result === 'object' && response.result !== null) {
+            formattedResult = JSON.stringify(response.result, null, 2);
+          } else {
+            formattedResult = String(response.result);
+          }
+          resultDiv.html('<strong>Result:</strong><pre>' + $('<div>').text(formattedResult).html() + '</pre>');
         } else {
           // Handle WordPress error format
           const errorMessage = response.errors
