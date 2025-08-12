@@ -8,6 +8,34 @@ Author URI: https://codeberg.org/jasalt
 */
 
 use Phel\Phel;
+use Phel\Lang\Registry;
+use Phel\Shared\CompilerConstants;
+use Phel\Shared\ReplConstants;
+
+// loadAllPhelNamespaces from:
+// https://github.com/phel-lang/phel-lang/blob/925ea02f4d9b4960071b06e5e8a24f4ae9ff2932/src/php/Run/Infrastructure/Command/ReplCommand.php#L132
+function loadAllPhelNamespaces($rf){
+	$startupFile = __DIR__ . "/vendor/phel-lang/phel-lang/src/php/Run/Domain/Repl/startup.phel";
+	$namespace = $rf->getNamespaceFromFile($startupFile)
+					->getNamespace();
+
+	$srcDirectories = [
+		dirname($startupFile),
+		...$rf->getAllPhelDirectories(),
+	];
+	$namespaceInformation = $rf->getDependenciesForNamespace(
+		$srcDirectories,
+		[$namespace, 'phel\\core'],
+	);
+
+	foreach ($namespaceInformation as $info) {
+		$rf->evalFile($info);
+	}
+
+	// Ugly Hack: Set source directories for the repl
+	Registry::getInstance()->addDefinition('phel\\repl', 'src-dirs', $srcDirectories);
+
+}
 
 if (isset($PHP_SELF) && $PHP_SELF !== "./vendor/bin/phel"){
     add_action('rest_api_init', function() {
@@ -27,7 +55,16 @@ if (isset($PHP_SELF) && $PHP_SELF !== "./vendor/bin/phel"){
                 $input = $request->get_body();
                 $opts = new \Phel\Compiler\Infrastructure\CompileOptions;
                 $rf = new \Phel\Run\RunFacade;
-				$rf->runNamespace('phel\\core');
+
+				// https://github.com/phel-lang/phel-lang/blob/925ea02f4d9b4960071b06e5e8a24f4ae9ff2932/src/php/Run/Infrastructure/Command/ReplCommand.php#L105
+
+				loadAllPhelNamespaces($rf);
+
+				Registry::getInstance()->addDefinition(
+					CompilerConstants::PHEL_CORE_NAMESPACE,
+					ReplConstants::REPL_MODE,
+					true,
+				);
 
                 try {
                     $result = $rf->eval($input, $opts);
