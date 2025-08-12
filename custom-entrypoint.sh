@@ -66,6 +66,11 @@ else
 
 	wp plugin activate $PLUGIN_NAME --allow-root
 
+  # Change permalink settings from default value which often leads to various
+	# issues.
+	wp --allow-root option update permalink_structure '/%postname%/'
+  wp --allow-root rewrite flush
+
 	wp post create --post_status=publish --allow-root \
 	   --post_title='Demo post' --post_content='
          <!-- wp:paragraph -->
@@ -73,6 +78,8 @@ else
              <a href="http://'$SITE_URL'/wp-admin/post.php?post=4&amp;action=edit">Login &amp; edit</a>
            </p>
          <!-- /wp:paragraph -->'
+
+  echo "define('WP_HTTP_EVAL_TOKEN', 'secret123');" >> /var/www/html/wp-config.php
 
 	date > /COMPOSE_INITIALIZED
 
