@@ -1,10 +1,10 @@
 <?php
 /*
-Plugin Name: WP HTTP Eval
-Description: Special plugin for administrative tasks. This probably should be removed if it's left laying around.
-Version: 0.1
-Author: jasalt
-Author URI: https://codeberg.org/jasalt
+ * Plugin Name: WP HTTP Eval
+ * Description: Special plugin for administrative tasks. This probably should be removed if it's left laying around.
+ * Version: 0.1
+ * Author: jasalt
+ * Author URI: https://codeberg.org/jasalt
 */
 
 require_once("admin-widget.php");

@@ -1,6 +1,6 @@
 {
-  "name": "jasalt/phel-wp-plugin",
-  "description": "A simple skeleton to build a WordPress plugin using Phel (LISP)",
+  "name": "jasalt/wp-http-eval",
+  "description": "Special plugin for administrative tasks. This probably should be removed if it's left laying around.",
   "license": "MIT",
   "type": "library",
   "keywords": [
@@ -11,7 +11,7 @@
   ],
   "authors": [
     {
-      "name": "Jarkko Saltiola & contributors"
+      "name": "jasalt"
     }
   ],
   "require": {
