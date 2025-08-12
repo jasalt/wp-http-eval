@@ -1,7 +1,9 @@
 <?php
 
 add_action('admin_init', function() {
-    add_action('wp_ajax_wp_http_eval', 'handle_eval_request');
+    if (defined('WP_HTTP_EVAL_TOKEN') && defined('WP_HTTP_EVAL_WIDGET')) {
+        add_action('wp_ajax_wp_http_eval', 'handle_eval_request');
+    }
 });
 
 function handle_eval_request() {
@@ -25,7 +27,7 @@ function handle_eval_request() {
 }
 
 add_action('wp_dashboard_setup', function() {
-    if (current_user_can('administrator')) {
+    if (current_user_can('administrator') && defined('WP_HTTP_EVAL_TOKEN') && defined('WP_HTTP_EVAL_WIDGET')) {
         wp_add_dashboard_widget(
             'wp_http_eval_widget',
             'Phel Code Evaluator',

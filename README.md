@@ -2,6 +2,11 @@
 
 After activating the plugin, setup token in `wp-config.php` with `define('WP_HTTP_EVAL_TOKEN', 'secret123');`.
 
+To enable the admin dashboard widget for evaluating Phel code, also add:
+`define('WP_HTTP_EVAL_WIDGET', true);`
+
+The widget provides a convenient interface for administrators to evaluate Phel expressions directly from the WordPress dashboard, with support for Ctrl+Enter keyboard shortcut.
+
 ## Development container setup
 
 Start a bare bones WordPress installation with the plugin installed by running `docker compose up` in this directory.
@@ -41,5 +46,9 @@ With Phel installed either as Phar named `phel` in `PATH` or via Composer where 
 WP_HTTP_EVAL_TOKEN=secret123 WP_HTTP_EVAL_HOST=http://localhost:8081 phel run client-example/client.phel
 
 Requesting http://localhost:8081/wp-json/wp-http-eval/v1/eval
-Response: {"success":true,"result":"<h1>Requested WP backend at vvv<\/h1>"}
+Response: {"success":true,"result":"<h1>Requested WP backend at 8de8a50072c7<\/h1>"}
 ```
+
+# TODO
+- Remove other admin widgets
+- Enable admin widget based on PHP constant in wp-config.php
